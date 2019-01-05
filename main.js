@@ -41,7 +41,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <app-login></app-login> -->\r\n<div class=\"eir-content\">\r\n    <div class=\"header\">\r\n        <app-header></app-header>\r\n    </div>\r\n\r\n    <main>\r\n        <div class=\"main-wrapper\">\r\n            <div class=\"main-container\">\r\n                <!-- <div [@routeAnimation]=\"getPage(routerOutlet)\"> -->\r\n                    <router-outlet #routerOutlet=\"outlet\"></router-outlet>\r\n                <!-- </div> -->\r\n                <!-- <app-add-event></app-add-event> -->\r\n            </div>\r\n        </div>\r\n    </main>\r\n\r\n</div>"
+module.exports = "<!-- <app-login></app-login> -->\r\n<div class=\"eir-content\">\r\n    <div class=\"header\">\r\n        <app-header></app-header>\r\n    </div>\r\n\r\n    <main>\r\n        <div class=\"main-wrapper\">\r\n            <div class=\"main-container\">\r\n                <!-- <div [@routeAnimation]=\"getPage(routerOutlet)\"> -->\r\n                    <router-outlet #routerOutlet=\"outlet\"></router-outlet>\r\n                <!-- </div> -->\r\n                <!-- <app-add-event></app-add-event> -->\r\n            </div>\r\n        </div>\r\n    </main>\r\n</div>"
 
 /***/ }),
 
@@ -161,6 +161,11 @@ var AppModule = /** @class */ (function () {
                         data: { page: 'events' }
                     },
                     {
+                        path: 'clientEvents',
+                        component: _events_events_component__WEBPACK_IMPORTED_MODULE_3__["EventsComponent"],
+                        data: { page: 'events' }
+                    },
+                    {
                         path: 'edit/:id',
                         component: _events_edit_event_edit_event_component__WEBPACK_IMPORTED_MODULE_12__["EditEventComponent"],
                         data: { page: 'events' }
@@ -220,7 +225,7 @@ module.exports = "/* button {\r\n    display: inline-block;\r\n    border-radius
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"add_event_wrap\">\n  <div class=\"add_event\">\n    <h3>Adauga eveniment</h3>\n    <div class=\"fields\">\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Nume</label>\n        <input [(ngModel)]=\"name\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Locatie</label>\n        <input [(ngModel)]=\"location\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Numar bilete</label>\n        <input [(ngModel)]=\"ticketsNr\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Descriere</label>\n        <input [(ngModel)]=\"description\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Pret</label>\n        <input [(ngModel)]=\"price\" type=\"text\">\n      </div>\n    </div>\n    <div class=\"add_event_btn\">\n      <button (click)=\"addEvent()\">Adauga eveniment</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"add_event_wrap\">\n  <div class=\"add_event\">\n    <h3 class=\"addEventLabel\">Adauga eveniment</h3>\n    <div class=\"fields\">\n      <div class=\"field\">\n        <label class=\"add_field_label\">Nume</label>\n        <input [(ngModel)]=\"name\" type=\"text\">\n      </div>\n      <div class=\"field\">\n        <label class=\"add_field_label\">Locatie</label>\n        <input [(ngModel)]=\"location\" type=\"text\">\n      </div>\n      <div class=\"field\">\n        <label class=\"add_field_label\">Numar bilete</label>\n        <input [(ngModel)]=\"ticketsNr\" type=\"text\">\n      </div>\n      <div class=\"field\">\n        <label class=\"add_field_label\">Descriere</label>\n        <input [(ngModel)]=\"description\" type=\"text\">\n      </div>\n      <div class=\"field\">\n        <label class=\"add_field_label\">Pret</label>\n        <input [(ngModel)]=\"price\" type=\"text\">\n      </div>\n    </div>\n    <div class=\"add_event_btn\">\n      <button class=\"loginButton\" (click)=\"addEvent()\">Adauga eveniment</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -237,6 +242,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_login_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../services/login.service */ "./src/app/services/login.service.ts");
 /* harmony import */ var _services_events_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/events.service */ "./src/app/services/events.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -249,15 +255,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AddEventComponent = /** @class */ (function () {
-    function AddEventComponent(eventsService, loginService) {
+    function AddEventComponent(eventsService, loginService, router) {
         this.eventsService = eventsService;
         this.loginService = loginService;
+        this.router = router;
         this.organizerId = loginService.getLoggedInUserId();
     }
     AddEventComponent.prototype.ngOnInit = function () {
     };
     AddEventComponent.prototype.addEvent = function () {
+        var _this = this;
         var data = {
             'organizerId': this.organizerId,
             'name': this.name,
@@ -268,6 +277,7 @@ var AddEventComponent = /** @class */ (function () {
         };
         this.eventsService.addEvent(data).then(function (result) {
             alert('Evenimentul a fost adaugat!');
+            _this.router.navigateByUrl('/events');
         });
     };
     AddEventComponent = __decorate([
@@ -276,7 +286,7 @@ var AddEventComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./add-event.component.html */ "./src/app/events/add-event/add-event.component.html"),
             styles: [__webpack_require__(/*! ./add-event.component.css */ "./src/app/events/add-event/add-event.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_events_service__WEBPACK_IMPORTED_MODULE_1__["EventsService"], _services_login_service__WEBPACK_IMPORTED_MODULE_0__["LoginService"]])
+        __metadata("design:paramtypes", [_services_events_service__WEBPACK_IMPORTED_MODULE_1__["EventsService"], _services_login_service__WEBPACK_IMPORTED_MODULE_0__["LoginService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], AddEventComponent);
     return AddEventComponent;
 }());
@@ -303,7 +313,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"add_event_wrap\">\n  <div class=\"add_event\">\n    <h3>Editare eveniment</h3>\n    <div class=\"fields\">\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Nume</label>\n        <input [(ngModel)]=\"name\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Locatie</label>\n        <input [(ngModel)]=\"location\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Numar bilete</label>\n        <input [(ngModel)]=\"ticketsNr\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Descriere</label>\n        <input [(ngModel)]=\"description\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Pret</label>\n        <input [(ngModel)]=\"price\" type=\"text\">\n      </div>\n    </div>\n    <div class=\"add_event_btn\">\n      <button (click)=\"saveEvent()\">Salveaza modificarile</button>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"add_event_wrap\">\n  <div class=\"add_event\">\n    <h3>Editare eveniment</h3>\n    <div class=\"fields\">\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Nume</label>\n        <input [(ngModel)]=\"name\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Locatie</label>\n        <input [(ngModel)]=\"location\" type=\"text\">\n      </div>\n      <!-- <div class=\"add_field\">\n        <label class=\"add_field_label\">Numar bilete</label>\n        <input [(ngModel)]=\"ticketsNr\" type=\"text\">\n      </div> -->\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Descriere</label>\n        <input [(ngModel)]=\"description\" type=\"text\">\n      </div>\n      <div class=\"add_field\">\n        <label class=\"add_field_label\">Pret</label>\n        <input [(ngModel)]=\"price\" type=\"text\">\n      </div>\n    </div>\n    <div class=\"add_event_btn\">\n      <button (click)=\"saveEvent()\">Salveaza modificarile</button>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -343,7 +353,7 @@ var EditEventComponent = /** @class */ (function () {
             var event = data;
             _this.name = event.name;
             _this.location = event.location;
-            _this.ticketsNumber = event.ticketsNumber;
+            // this.ticketsNumber = event.ticketsNumber;
             _this.description = event.descrption;
             _this.price = event.price;
         });
@@ -354,7 +364,7 @@ var EditEventComponent = /** @class */ (function () {
             'eventId': this.eventId,
             'name': this.name,
             'location': this.location,
-            'ticketsNumber': this.ticketsNumber,
+            // 'ticketsNumber': this.ticketsNumber,
             'description': this.description,
             'price': this.price
         };
@@ -400,7 +410,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<table style=\"width: 100%\">\n  <tr>\n    <th>Nume</th>\n    <th>Locatie</th>\n    <th>Bilete disponibile</th>\n    <th>Bilete vandute</th>\n    <th>Pret</th>\n    <th>Actiuni</th>\n  </tr>\n  <ng-container *ngFor=\"let event of events\">\n    <tr>\n      <td>{{event.name}}</td>\n      <td>{{event.location}}</td>\n      <td>{{event.ticketsAvailable}}</td>\n      <td>{{event.ticketsSold}}</td>\n      <td>{{event.price}}</td>\n      <td>\n        <button *ngIf=\"isOrganizer\" (click)=\"editEvent(event.eventId)\">Editare</button>\n        <button *ngIf=\"isOrganizer\" (click)=\"deleteEvent(event.eventId)\">Sterge</button>\n        <button *ngIf=\"!isOrganizer\" (click)=\"viewEvent(event.eventId)\">Vizualizare</button>\n      </td>\n    </tr>\n  </ng-container>\n</table>"
+module.exports = "<table style=\"width: 100%\">\n  <tr>\n    <th>Nume</th>\n    <th>Locatie</th>\n    <th *ngIf=\"!isClientTickets\">Bilete disponibile</th>\n    <th *ngIf=\"isOrganizer\">Bilete vandute</th>\n    <th>Pret</th>\n    <th *ngIf=\"!isClientTickets\">Actiuni</th>\n  </tr>\n  <ng-container *ngFor=\"let event of events\">\n    <tr>\n      <td>{{event.name}}</td>\n      <td>{{event.location}}</td>\n      <td *ngIf=\"!isClientTickets\">{{event.ticketsAvailable}}</td>\n      <td *ngIf=\"isOrganizer\">{{event.ticketsSold}}</td>\n      <td>{{event.price}}</td>\n      <td *ngIf=\"!isClientTickets\">\n        <button *ngIf=\"isOrganizer\" (click)=\"editEvent(event.eventId)\">Editare</button>\n        <button *ngIf=\"isOrganizer\" (click)=\"deleteEvent(event.eventId)\">Sterge</button>\n        <button *ngIf=\"!isOrganizer\" (click)=\"viewEvent(event.eventId)\">Vizualizare</button>\n      </td>\n    </tr>\n  </ng-container>\n</table>"
 
 /***/ }),
 
@@ -436,9 +446,13 @@ var EventsComponent = /** @class */ (function () {
         this.eventsService = eventsService;
         this.router = router;
         this.loginService = loginService;
+        this.isClientTickets = this.router.url === '/clientEvents';
         this.isOrganizer = loginService.isOrganizer();
         if (this.isOrganizer) {
             this.getOrganizerEvents();
+        }
+        else if (this.isClientTickets) {
+            this.getClientEvents();
         }
         else {
             this.getAllEvents();
@@ -478,6 +492,12 @@ var EventsComponent = /** @class */ (function () {
     EventsComponent.prototype.viewEvent = function (eventId) {
         this.router.navigateByUrl('/view/' + eventId);
     };
+    EventsComponent.prototype.getClientEvents = function () {
+        var _this = this;
+        this.eventsService.getClientEvents(this.loginService.getLoggedInUserId()).then(function (data) {
+            _this.events = data;
+        });
+    };
     EventsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
             selector: 'app-events',
@@ -511,7 +531,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  <div>{{name}}</div>\n  <div>{{location}}</div>\n  <div>{{description}}</div>\n  <div>{{price}}</div>\n  <div>\n    <button (click)=\"buyTicket()\">Cumpara!</button>\n  </div>\n</div>"
+module.exports = "<div class=\"viewEventDiv\">\n  <div class=\"viewEventField\">{{name}}</div>\n  <div class=\"viewEventField\">{{location}}</div>\n  <div class=\"viewEventField\">{{description}}</div>\n  <div class=\"viewEventField\">{{price}}</div>\n  <div>\n    <button class=\"loginButton\" (click)=\"buyTicket()\">Cumpara!</button>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -528,6 +548,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_login_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../services/login.service */ "./src/app/services/login.service.ts");
 /* harmony import */ var _services_events_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/events.service */ "./src/app/services/events.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -540,10 +561,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ViewEventComponent = /** @class */ (function () {
-    function ViewEventComponent(eventsService, loginService) {
+    function ViewEventComponent(eventsService, loginService, router) {
         this.eventsService = eventsService;
         this.loginService = loginService;
+        this.router = router;
         var query = window.location.pathname;
         this.eventId = query.split('/')[query.split('/').length - 1];
         this.clientId = loginService.getLoggedInUserId();
@@ -556,11 +579,12 @@ var ViewEventComponent = /** @class */ (function () {
             _this.name = event.name;
             _this.location = event.location;
             _this.ticketsNr = event.ticketsNumber;
-            _this.description = event.description;
+            _this.description = event.descrption;
             _this.price = event.price;
         });
     };
     ViewEventComponent.prototype.buyTicket = function () {
+        var _this = this;
         var data = {
             'eventId': this.eventId,
             'clientId': this.clientId
@@ -568,6 +592,7 @@ var ViewEventComponent = /** @class */ (function () {
         this.eventsService.buyTicket(data).then(function (result) {
             if (result) {
                 alert('Biletul a fost cumparat!');
+                _this.router.navigateByUrl('clientEvents');
             }
         });
     };
@@ -579,7 +604,7 @@ var ViewEventComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./view-event.component.html */ "./src/app/events/view-event/view-event.component.html"),
             styles: [__webpack_require__(/*! ./view-event.component.css */ "./src/app/events/view-event/view-event.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_events_service__WEBPACK_IMPORTED_MODULE_1__["EventsService"], _services_login_service__WEBPACK_IMPORTED_MODULE_0__["LoginService"]])
+        __metadata("design:paramtypes", [_services_events_service__WEBPACK_IMPORTED_MODULE_1__["EventsService"], _services_login_service__WEBPACK_IMPORTED_MODULE_0__["LoginService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], ViewEventComponent);
     return ViewEventComponent;
 }());
@@ -606,7 +631,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"header-wrapper\">\n  <div class=\"main-nav\">\n    <ul *ngIf=\"isUserLoggedIn\">\n      <!-- <li class=\"logo\"><img src=\"/assets/logo.png\" height=\"50\" width=\"110\"/></li> -->\n      <li *ngIf=\"isOrganizer\" routerLink=\"addEvent\" routerLinkActive=\"active\">Adauga eveniment</li>\n      <li *ngIf=\"isOrganizer || isClient\" routerLink=\"events\" routerLinkActive=\"active\">Evenimente</li>\n      <li *ngIf=\"isClient\" routerLink=\"even\" routerLinkActive=\"active\">Biletele mele</li>\n      <!-- <li routerLink = \"administrate/add_ambulance\" routerLinkActive=\"active\">ADMINISTRARE</li> -->\n      <!-- <li routerLink = \"help\" routerLinkActive=\"active\">AJUTOR</li> -->\n      <li style=\"margin-right: 10px;\">\n        <button *ngIf=\"isUserLoggedIn\" (click)=logout()>Logout</button>\n      </li>\n    </ul>\n   \n  </div>\n</div>"
+module.exports = "<div class=\"header-wrapper\">\n  <div class=\"main-nav\">\n    <ul *ngIf=\"isUserLoggedIn\">\n      <!-- <li class=\"logo\"><img src=\"/assets/logo.png\" height=\"50\" width=\"110\"/></li> -->\n      <li *ngIf=\"isOrganizer\" routerLink=\"addEvent\" routerLinkActive=\"active\">Adauga eveniment</li>\n      <li *ngIf=\"isOrganizer || isClient\" routerLink=\"events\" routerLinkActive=\"active\">Evenimente</li>\n      <li *ngIf=\"isClient\" routerLink=\"clientEvents\" routerLinkActive=\"active\">Biletele mele</li>\n      <!-- <li routerLink = \"administrate/add_ambulance\" routerLinkActive=\"active\">ADMINISTRARE</li> -->\n      <!-- <li routerLink = \"help\" routerLinkActive=\"active\">AJUTOR</li> -->\n      <li style=\"margin-right: 10px;\">\n        <button class=\"loginButton\" *ngIf=\"isUserLoggedIn\" (click)=logout()>Logout</button>\n      </li>\n    </ul>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -687,7 +712,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Conecteaza-te</h3>\n<div class=\"fields\">\n  <div class=\"field\">\n    <label class=\"field_label\">Tip utilizator</label>\n    <select [(ngModel)]=\"accountType\">\n      <option value=\"0\">Organizator</option>\n      <option value=\"1\">Client</option>\n    </select>\n  </div>\n  <div class=\"field\">\n    <label class=\"field_label\">Utilizator</label>\n    <input [(ngModel)]=\"username\" type=\"text\">\n  </div>\n  <div class=\"field\">\n    <label class=\"field_label\">Parola</label>\n    <input [(ngModel)]=\"password\" type=\"password\">\n  </div>\n</div>\n<div class=\"login_btn\">\n  <button (click)=\"login()\">Login</button>\n</div>"
+module.exports = "<div class=\"loginDiv\">\n  <h3 class=\"loginLabel\">Conecteaza-te</h3>\n  <div class=\"fields\">\n    <div class=\"field\">\n      <label class=\"field_label1\">Tip utilizator</label>\n      <select [(ngModel)]=\"accountType\" class=\"userType\">\n        <option value=\"0\">Organizator</option>\n        <option value=\"1\">Client</option>\n      </select>\n    </div>\n    <div class=\"field\">\n      <label class=\"field_label2\" >Utilizator</label>\n      <input [(ngModel)]=\"username\" class=\"username\" type=\"text\">\n    </div>\n    <div class=\"field\">\n      <label class=\"field_label3\">Parola</label>\n      <input [(ngModel)]=\"password\" type=\"password\" class=\"password\">\n    </div>\n  </div>\n  <div class=\"login_btn\">\n    <button class=\"loginButton\" (click)=\"login()\">Login</button>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -733,20 +758,22 @@ var LoginComponent = /** @class */ (function () {
             'accountType': this.accountType
         };
         this.loginService.login(data).then(function (result) {
-            if (result) {
-                _this.loginService.setUserAccountType(Number(_this.accountType));
-                var res = result;
-                var url = '';
-                if (Number(_this.accountType) === _enums_accountType_enum__WEBPACK_IMPORTED_MODULE_2__["AccountType"].Organizer) {
-                    sessionStorage.setItem('accountId', res.organizerId);
-                    url = '/addEvent';
-                }
-                else {
-                    sessionStorage.setItem('accountId', res.clientId);
-                    url = '/events';
-                }
-                _this.router.navigateByUrl(url);
+            // if ((result as any).status === 200) {
+            _this.loginService.setUserAccountType(Number(_this.accountType));
+            var res = result;
+            var url = '';
+            if (Number(_this.accountType) === _enums_accountType_enum__WEBPACK_IMPORTED_MODULE_2__["AccountType"].Organizer) {
+                sessionStorage.setItem('accountId', res.organizerId);
+                url = '/addEvent';
             }
+            else {
+                sessionStorage.setItem('accountId', res.clientId);
+                url = '/events';
+            }
+            _this.router.navigateByUrl(url);
+            // } else {
+            //   alert('Utilizator sau parola gresita!');
+            // }
         });
     };
     LoginComponent = __decorate([
@@ -884,6 +911,9 @@ var EventsService = /** @class */ (function () {
     // to dos
     EventsService.prototype.editEvent = function (data) {
         return this.http.post(this.configService.editEvent, data).toPromise();
+    };
+    EventsService.prototype.getClientEvents = function (clientId) {
+        return this.http.get(this.configService.getClientEvents + '?id=' + clientId).toPromise();
     };
     EventsService.prototype.getEvents = function (organizerId) {
         return this.http.get(this.configService.getEvents + '?id=' + organizerId).toPromise();
