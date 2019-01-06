@@ -815,7 +815,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var ConfigService = /** @class */ (function () {
     function ConfigService() {
         // to do
-        this.apiUrl = 'http://35.198.154.143/api';
+        this.apiUrl = 'https://35.198.154.143/api';
     }
     Object.defineProperty(ConfigService.prototype, "login", {
         get: function () { return this.apiUrl + '/login'; },
