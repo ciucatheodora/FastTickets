@@ -1,0 +1,118 @@
+API:
+
+LOGIN:
+
+- POST: /api/login
+
+Data sent:
+{
+    'username': ...,
+    'password': ...,
+    'accountType': ... // 0 - organizator, 1 - client
+}
+
+Response:
+organizerId or clientId
+
+ORGANIZER:
+
+- GET: /api/getEvents?id=organizerId
+
+Response: 
+[{
+	'eventId': 0,
+	'name': ...,
+	'price': ...,
+	'location': ...,
+	'ticketsAvailable': ...,
+	'ticketsSold': ...,
+	'description': ...
+},
+{...},
+{...}] 
+
+- POST: /api/addEvent
+
+Data sent:
+{
+	'organizerId': ...,
+	'name': ...,
+	'location': ...,
+	'ticketsNumber': ...,
+	'description': ...,
+	'price': ...
+}
+	
+Response:
+eventId
+
+- GET: /api/getEvent?id=eventId
+Response:
+{
+	'eventId': ...,
+	'name': ...,
+	'price': ...,
+	'location': ...,
+	'ticketsAvailable': ...,
+	'ticketsSold': ...,
+	'description': ...
+}
+
+- POST: /api/editEvent
+
+Data sent:
+{
+	'eventId': ...,
+	'name': ...,
+	'location': ...,
+	'ticketsNumber': ...,
+	'description': ...,
+	'price': ...
+}
+
+Response:
+eventId
+
+- DELETE: /api/deleteEvent?id=eventId
+Response: "success" or "failed" as string	
+	
+	
+CLIENT:
+
+- GET: /api/getAllEvents
+
+Response: 
+[{
+	'eventId': 0,
+	'name': ...,
+	'price': ...,
+	'location': ...,
+	'ticketsAvailable': ...,
+	'description': ...
+},
+{...},
+{...}]
+
+- GET: /api/getClientEvents?id=clientId
+
+Response: 
+[{
+	'eventId': 0,
+	'name': ...,
+	'price': ...,
+	'location': ...,
+	'description': ...
+},
+{...},
+{...}]
+
+- POST: /api/buyTicket
+
+Data sent:
+{ 
+	'eventId': ...,
+	'clientId': ...
+}
+
+Response:
+eventId
